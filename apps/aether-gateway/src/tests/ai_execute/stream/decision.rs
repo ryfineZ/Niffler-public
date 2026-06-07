@@ -903,9 +903,17 @@ async fn gateway_executes_openai_chat_stream_via_local_openai_responses_cross_fo
         seen_execution_runtime_request.conversation_id,
         "9fa08f4f14ccba13"
     );
-    assert_eq!(
-        seen_execution_runtime_request.instructions,
-        "You are terse."
+    assert!(
+        seen_execution_runtime_request
+            .instructions
+            .starts_with("You are terse."),
+        "system instructions should preserve the user-provided system message"
+    );
+    assert!(
+        seen_execution_runtime_request
+            .instructions
+            .contains("<niffler-codex-image-generation>"),
+        "Codex Responses requests should include the native image-generation guidance"
     );
     assert_eq!(seen_execution_runtime_request.user_text, "Say hello");
 
