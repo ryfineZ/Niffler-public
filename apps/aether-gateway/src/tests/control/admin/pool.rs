@@ -2621,7 +2621,7 @@ async fn gateway_treats_stale_codex_exhausted_snapshot_as_available_when_windows
     assert_eq!(keys[0]["scheduling_reason"], json!("available"));
     assert_eq!(
         keys[0]["account_quota"],
-        json!("周剩余 100.0% (7天0小时后重置) | 5H剩余 100.0% (5小时0分钟后重置)")
+        json!("周剩余 100.0% | 5H剩余 100.0%")
     );
 }
 

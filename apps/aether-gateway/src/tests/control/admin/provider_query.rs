@@ -3392,8 +3392,8 @@ async fn gateway_handles_openai_responses_test_model_locally() {
                     .json_body
                     .as_ref()
                     .and_then(|body| body.get("tool_choice"))
-                    .is_none(),
-                "普通 Responses 测试请求不应强制选择图片工具"
+                    .is_some_and(|value| value == "auto"),
+                "普通 Responses 测试请求只能自动选择工具，不能强制选择图片工具"
             );
             assert_eq!(
                 plan.body
