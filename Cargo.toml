@@ -1,0 +1,119 @@
+[workspace]
+members = [
+    "apps/aether-tunnel",
+    "crates/aether-ai-formats",
+    "crates/aether-admin",
+    "crates/aether-ai-serving",
+    "crates/aether-pool-core",
+    "crates/aether-provider-pool",
+    "crates/aether-routing-core",
+    "crates/aether-data-contracts",
+    "crates/aether-data-query",
+    "crates/aether-data-schema",
+    "crates/aether-dispatch-core",
+    "crates/aether-cache",
+    "crates/aether-billing",
+    "crates/aether-wallet",
+    "crates/aether-crypto",
+    "crates/aether-contracts",
+    "crates/aether-data",
+    "crates/aether-model-fetch",
+    "crates/aether-oauth",
+    "crates/aether-provider-transport",
+    "crates/aether-scheduler-core",
+    "crates/aether-runtime-state",
+    "crates/aether-task-runtime",
+    "crates/aether-usage-runtime",
+    "crates/aether-video-tasks-core",
+    "apps/aether-gateway",
+    "crates/aether-http",
+    "crates/aether-runtime",
+    "crates/aether-testkit",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "LicenseRef-Aether-NonCommercial"
+repository = "https://github.com/ryfineZ/Niffler.git"
+
+[workspace.dependencies]
+aether-admin = { path = "crates/aether-admin" }
+aether-ai-formats = { path = "crates/aether-ai-formats" }
+aether-ai-serving = { path = "crates/aether-ai-serving" }
+aether-pool-core = { path = "crates/aether-pool-core" }
+aether-provider-pool = { path = "crates/aether-provider-pool" }
+aether-routing-core = { path = "crates/aether-routing-core" }
+aether-data-contracts = { path = "crates/aether-data-contracts" }
+aether-data-query = { path = "crates/aether-data-query" }
+aether-data-schema = { path = "crates/aether-data-schema" }
+aether-dispatch-core = { path = "crates/aether-dispatch-core" }
+aether-cache = { path = "crates/aether-cache" }
+aether-billing = { path = "crates/aether-billing" }
+aether-wallet = { path = "crates/aether-wallet" }
+aether-crypto = { path = "crates/aether-crypto" }
+aether-contracts = { path = "crates/aether-contracts" }
+aether-data = { path = "crates/aether-data" }
+aether-model-fetch = { path = "crates/aether-model-fetch" }
+aether-oauth = { path = "crates/aether-oauth" }
+aether-provider-transport = { path = "crates/aether-provider-transport" }
+aether-scheduler-core = { path = "crates/aether-scheduler-core" }
+aether-runtime-state = { path = "crates/aether-runtime-state" }
+aether-task-runtime = { path = "crates/aether-task-runtime" }
+aether-usage-runtime = { path = "crates/aether-usage-runtime" }
+aether-video-tasks-core = { path = "crates/aether-video-tasks-core" }
+aether-gateway = { path = "apps/aether-gateway" }
+aether-http = { path = "crates/aether-http" }
+aether-runtime = { path = "crates/aether-runtime" }
+aether-testkit = { path = "crates/aether-testkit" }
+aes = "0.8"
+async-stream = "0.3"
+async-trait = "0.1"
+axum = "0.8"
+base64 = "0.22"
+bcrypt = "0.16"
+bytes = "1"
+cbc = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.10"
+flate2 = "1"
+futures-util = "0.3"
+hmac = "0.12"
+http = "1"
+pbkdf2 = { version = "0.12", default-features = false, features = ["hmac"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls", "http2", "socks"] }
+redis = { version = "0.28", default-features = false, features = ["tokio-comp", "script", "streams"] }
+regex = "1"
+rustls = { version = "0.23", features = ["ring"] }
+semver = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+serde_path_to_error = "0.1"
+sha2 = "0.10"
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "mysql", "sqlite", "runtime-tokio-rustls", "chrono"] }
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal", "sync", "time"] }
+tokio-util = { version = "0.7", features = ["codec", "io-util"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+uuid = { version = "1", features = ["serde", "v4", "v5"] }
+webpki-roots = "0.26"
+wreq = { version = "6.0.0-rc.28", default-features = false, features = ["json", "stream", "socks", "webpki-roots", "ws"] }
+wreq-util = "3.0.0-rc.10"
+url = "2"
+zstd = "0.13"
+
+[profile.dev]
+# Keep file/line information for backtraces while avoiding full debug info
+# generation on very large crates during local development builds.
+debug = "line-tables-only"
+
+[profile.test]
+# The gateway test target pulls in a very large in-crate test tree, so use the
+# lighter debug format here as well to reduce rustc peak memory.
+debug = "line-tables-only"
+
+[profile.release]
+lto = "thin"
+strip = true
+codegen-units = 8

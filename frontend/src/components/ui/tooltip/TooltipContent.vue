@@ -1,0 +1,45 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { TooltipContent as TooltipContentPrimitive, TooltipPortal } from 'radix-vue'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  class?: string
+  side?: 'top' | 'right' | 'bottom' | 'left'
+  sideOffset?: number
+  align?: 'start' | 'center' | 'end'
+  alignOffset?: number
+  avoidCollisions?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  class: undefined,
+  side: 'top',
+  sideOffset: 4,
+  align: 'center',
+  alignOffset: 0,
+  avoidCollisions: true
+})
+
+const contentClass = computed(() =>
+  cn(
+    'z-[220] overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+    props.class
+  )
+)
+</script>
+
+<template>
+  <TooltipPortal>
+    <TooltipContentPrimitive
+      :class="contentClass"
+      :side="side"
+      :side-offset="sideOffset"
+      :align="align"
+      :align-offset="alignOffset"
+      :avoid-collisions="avoidCollisions"
+    >
+      <slot />
+    </TooltipContentPrimitive>
+  </TooltipPortal>
+</template>

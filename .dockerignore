@@ -1,0 +1,53 @@
+# Build artifacts
+build/
+target/
+*.so
+*.egg
+*.egg-info/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Development
+.git/
+.gitignore
+.github/
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+/data/
+
+# Docker
+docker-compose.override.yml
+Dockerfile.*
+
+# Deployment
+deploy/
+scripts/

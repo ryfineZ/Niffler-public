@@ -1,0 +1,1280 @@
+[table.niffler_upstream_services]
+domain = "niffler_core"
+order = 900
+primary_key = ["id"]
+
+[[table.niffler_upstream_services.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_services.columns]]
+name = "display_name"
+type = "text"
+length = 200
+
+[[table.niffler_upstream_services.columns]]
+name = "service_kind"
+type = "text"
+length = 64
+
+[[table.niffler_upstream_services.columns]]
+name = "default_api_format"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_upstream_services.columns]]
+name = "base_url"
+type = "long_text"
+nullable = true
+
+[[table.niffler_upstream_services.columns]]
+name = "cost_multiplier"
+type = "float64"
+default = 1
+
+[[table.niffler_upstream_services.columns]]
+name = "is_active"
+type = "bool"
+default = true
+
+[[table.niffler_upstream_services.columns]]
+name = "config"
+type = "json"
+nullable = true
+
+[[table.niffler_upstream_services.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_services.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_services.indexes]]
+name = "idx_niffler_upstream_services_kind_active"
+columns = ["service_kind", "is_active"]
+
+[table.niffler_upstream_accounts]
+domain = "niffler_core"
+order = 910
+primary_key = ["id"]
+
+[[table.niffler_upstream_accounts.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_accounts.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_accounts.columns]]
+name = "display_name"
+type = "text"
+length = 200
+
+[[table.niffler_upstream_accounts.columns]]
+name = "email"
+type = "text"
+length = 320
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "phone"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "auth_kind"
+type = "text"
+length = 64
+
+[[table.niffler_upstream_accounts.columns]]
+name = "status"
+type = "text"
+length = 32
+default = "available"
+
+[[table.niffler_upstream_accounts.columns]]
+name = "cost_multiplier"
+type = "float64"
+default = 1
+
+[[table.niffler_upstream_accounts.columns]]
+name = "priority"
+type = "int32"
+default = 0
+
+[[table.niffler_upstream_accounts.columns]]
+name = "cooldown_until_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "last_tested_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "last_test_error"
+type = "long_text"
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "config"
+type = "json"
+nullable = true
+
+[[table.niffler_upstream_accounts.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_accounts.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_accounts.indexes]]
+name = "idx_niffler_upstream_accounts_service_status"
+columns = ["upstream_service_id", "status", "priority"]
+
+[[table.niffler_upstream_accounts.indexes]]
+name = "idx_niffler_upstream_accounts_email"
+columns = ["email"]
+
+[[table.niffler_upstream_accounts.foreign_keys]]
+name = "fk_niffler_upstream_accounts_service"
+columns = ["upstream_service_id"]
+references_table = "niffler_upstream_services"
+references_columns = ["id"]
+
+[table.niffler_product_plans]
+domain = "niffler_core"
+order = 920
+primary_key = ["id"]
+
+[[table.niffler_product_plans.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_product_plans.columns]]
+name = "display_name"
+type = "text"
+length = 200
+
+[[table.niffler_product_plans.columns]]
+name = "is_public"
+type = "bool"
+default = false
+
+[[table.niffler_product_plans.columns]]
+name = "is_active"
+type = "bool"
+default = true
+
+[[table.niffler_product_plans.columns]]
+name = "sales_multiplier"
+type = "float64"
+default = 1
+
+[[table.niffler_product_plans.columns]]
+name = "description"
+type = "long_text"
+nullable = true
+
+[[table.niffler_product_plans.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_product_plans.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_product_plans.indexes]]
+name = "idx_niffler_product_plans_public_active"
+columns = ["is_public", "is_active"]
+
+[table.niffler_product_plan_models]
+domain = "niffler_core"
+order = 930
+primary_key = ["id"]
+
+[[table.niffler_product_plan_models.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_product_plan_models.columns]]
+name = "product_plan_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_product_plan_models.columns]]
+name = "model_name"
+type = "text"
+length = 200
+
+[[table.niffler_product_plan_models.columns]]
+name = "is_enabled"
+type = "bool"
+default = true
+
+[[table.niffler_product_plan_models.columns]]
+name = "sales_multiplier_override"
+type = "float64"
+nullable = true
+
+[[table.niffler_product_plan_models.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_product_plan_models.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_product_plan_models.uniques]]
+name = "uq_niffler_product_plan_models_plan_model"
+columns = ["product_plan_id", "model_name"]
+
+[[table.niffler_product_plan_models.indexes]]
+name = "idx_niffler_product_plan_models_model"
+columns = ["model_name", "is_enabled"]
+
+[[table.niffler_product_plan_models.foreign_keys]]
+name = "fk_niffler_product_plan_models_plan"
+columns = ["product_plan_id"]
+references_table = "niffler_product_plans"
+references_columns = ["id"]
+
+[table.niffler_model_base_prices]
+domain = "niffler_core"
+order = 940
+primary_key = ["id"]
+
+[[table.niffler_model_base_prices.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_model_base_prices.columns]]
+name = "model_name"
+type = "text"
+length = 200
+
+[[table.niffler_model_base_prices.columns]]
+name = "input_price_per_million"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_model_base_prices.columns]]
+name = "output_price_per_million"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_model_base_prices.columns]]
+name = "cache_write_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_model_base_prices.columns]]
+name = "cache_read_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_model_base_prices.columns]]
+name = "source"
+type = "text"
+length = 64
+
+[[table.niffler_model_base_prices.columns]]
+name = "effective_from_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_model_base_prices.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_model_base_prices.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_model_base_prices.indexes]]
+name = "idx_niffler_model_base_prices_model_effective"
+columns = ["model_name", "effective_from_unix_ms"]
+
+[table.niffler_upstream_model_prices]
+domain = "niffler_core"
+order = 950
+primary_key = ["id"]
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "model_name"
+type = "text"
+length = 200
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "upstream_input_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "upstream_output_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "upstream_cache_write_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "upstream_cache_read_price_per_million"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "price_source_preference"
+type = "text"
+length = 32
+default = "official"
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "source"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "synced_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_model_prices.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_model_prices.uniques]]
+name = "uq_niffler_upstream_model_prices_service_model"
+columns = ["upstream_service_id", "model_name"]
+
+[[table.niffler_upstream_model_prices.foreign_keys]]
+name = "fk_niffler_upstream_model_prices_service"
+columns = ["upstream_service_id"]
+references_table = "niffler_upstream_services"
+references_columns = ["id"]
+
+[table.niffler_account_model_capabilities]
+domain = "niffler_core"
+order = 960
+primary_key = ["id"]
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "upstream_account_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "model_name"
+type = "text"
+length = 200
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "is_enabled"
+type = "bool"
+default = true
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "source"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "last_checked_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "last_error"
+type = "long_text"
+nullable = true
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_account_model_capabilities.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_account_model_capabilities.uniques]]
+name = "uq_niffler_account_model_capabilities_account_model"
+columns = ["upstream_account_id", "model_name"]
+
+[[table.niffler_account_model_capabilities.indexes]]
+name = "idx_niffler_account_model_capabilities_model"
+columns = ["model_name", "is_enabled"]
+
+[[table.niffler_account_model_capabilities.foreign_keys]]
+name = "fk_niffler_account_model_capabilities_service"
+columns = ["upstream_service_id"]
+references_table = "niffler_upstream_services"
+references_columns = ["id"]
+
+[[table.niffler_account_model_capabilities.foreign_keys]]
+name = "fk_niffler_account_model_capabilities_account"
+columns = ["upstream_account_id"]
+references_table = "niffler_upstream_accounts"
+references_columns = ["id"]
+
+[table.niffler_route_attempts]
+domain = "niffler_core"
+order = 970
+primary_key = ["id"]
+
+[[table.niffler_route_attempts.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_route_attempts.columns]]
+name = "request_id"
+type = "text"
+length = 100
+
+[[table.niffler_route_attempts.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "upstream_account_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "product_plan_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "model_name"
+type = "text"
+length = 200
+
+[[table.niffler_route_attempts.columns]]
+name = "attempt_index"
+type = "int32"
+
+[[table.niffler_route_attempts.columns]]
+name = "status"
+type = "text"
+length = 32
+
+[[table.niffler_route_attempts.columns]]
+name = "skip_reason"
+type = "long_text"
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "upstream_status_code"
+type = "int32"
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "latency_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_route_attempts.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_route_attempts.indexes]]
+name = "idx_niffler_route_attempts_request"
+columns = ["request_id", "attempt_index"]
+
+[[table.niffler_route_attempts.indexes]]
+name = "idx_niffler_route_attempts_account"
+columns = ["upstream_account_id", "created_at_unix_ms"]
+
+[table.niffler_error_return_settings]
+domain = "niffler_core"
+order = 980
+primary_key = ["id"]
+
+[[table.niffler_error_return_settings.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_error_return_settings.columns]]
+name = "scope"
+type = "text"
+length = 32
+
+[[table.niffler_error_return_settings.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "match_status_code"
+type = "int32"
+nullable = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "match_text"
+type = "long_text"
+nullable = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "handling_step"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "response_mode"
+type = "text"
+length = 32
+default = "replace"
+
+[[table.niffler_error_return_settings.columns]]
+name = "user_message"
+type = "long_text"
+
+[[table.niffler_error_return_settings.columns]]
+name = "account_protection_action"
+type = "text"
+length = 32
+default = "record_only"
+
+[[table.niffler_error_return_settings.columns]]
+name = "pause_duration"
+type = "text"
+length = 32
+nullable = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "is_active"
+type = "bool"
+default = true
+
+[[table.niffler_error_return_settings.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_error_return_settings.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_error_return_settings.indexes]]
+name = "idx_niffler_error_return_settings_scope_active"
+columns = ["scope", "is_active"]
+
+[[table.niffler_error_return_settings.indexes]]
+name = "idx_niffler_error_return_settings_upstream"
+columns = ["upstream_service_id", "is_active"]
+
+[table.niffler_account_risk_events]
+domain = "niffler_core"
+order = 990
+primary_key = ["id"]
+
+[[table.niffler_account_risk_events.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_account_risk_events.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "upstream_account_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_account_risk_events.columns]]
+name = "request_id"
+type = "text"
+length = 100
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "user_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "api_key_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "model_name"
+type = "text"
+length = 200
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "rule_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "matched_text"
+type = "long_text"
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "upstream_status_code"
+type = "int32"
+nullable = true
+
+[[table.niffler_account_risk_events.columns]]
+name = "action"
+type = "text"
+length = 32
+
+[[table.niffler_account_risk_events.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_account_risk_events.indexes]]
+name = "idx_niffler_account_risk_events_account_time"
+columns = ["upstream_account_id", "created_at_unix_ms"]
+
+[[table.niffler_account_risk_events.indexes]]
+name = "idx_niffler_account_risk_events_request"
+columns = ["request_id"]
+
+[table.niffler_api_key_pauses]
+domain = "niffler_core"
+order = 1000
+primary_key = ["id"]
+
+[[table.niffler_api_key_pauses.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_api_key_pauses.columns]]
+name = "api_key_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_api_key_pauses.columns]]
+name = "reason_code"
+type = "text"
+length = 64
+
+[[table.niffler_api_key_pauses.columns]]
+name = "user_message"
+type = "long_text"
+
+[[table.niffler_api_key_pauses.columns]]
+name = "paused_until_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_api_key_pauses.columns]]
+name = "manual_restore_required"
+type = "bool"
+default = false
+
+[[table.niffler_api_key_pauses.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_api_key_pauses.columns]]
+name = "restored_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_api_key_pauses.columns]]
+name = "restored_by"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_api_key_pauses.indexes]]
+name = "idx_niffler_api_key_pauses_key_active"
+columns = ["api_key_id", "restored_at_unix_ms", "paused_until_unix_ms"]
+
+[table.niffler_upstream_service_capabilities]
+domain = "niffler_core"
+order = 1010
+primary_key = ["id"]
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "protocol_kind"
+type = "text"
+length = 32
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "capability_kind"
+type = "text"
+length = 64
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "is_enabled"
+type = "bool"
+default = true
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "config"
+type = "json"
+nullable = true
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_service_capabilities.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_upstream_service_capabilities.uniques]]
+name = "uq_niffler_upstream_service_capabilities"
+columns = ["upstream_service_id", "protocol_kind", "capability_kind"]
+
+[[table.niffler_upstream_service_capabilities.indexes]]
+name = "idx_niffler_upstream_service_capabilities_lookup"
+columns = ["protocol_kind", "capability_kind", "is_enabled"]
+
+[[table.niffler_upstream_service_capabilities.foreign_keys]]
+name = "fk_niffler_upstream_service_capabilities_service"
+columns = ["upstream_service_id"]
+references_table = "niffler_upstream_services"
+references_columns = ["id"]
+
+[table.niffler_settlement_snapshots]
+domain = "niffler_core"
+order = 1020
+primary_key = ["id"]
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "request_id"
+type = "text"
+length = 100
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "user_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "api_key_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "product_plan_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "upstream_service_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "upstream_account_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "requested_model_name"
+type = "text"
+length = 200
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "upstream_execution_model_name"
+type = "text"
+length = 200
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "image_tool_model_name"
+type = "text"
+length = 200
+nullable = true
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "pricing_snapshot"
+type = "json"
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "wallet_charge_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "entitlement_charge_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "upstream_cost_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "gross_margin_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_settlement_snapshots.columns]]
+name = "finalized_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_settlement_snapshots.uniques]]
+name = "uq_niffler_settlement_snapshots_request"
+columns = ["request_id"]
+
+[[table.niffler_settlement_snapshots.indexes]]
+name = "idx_niffler_settlement_snapshots_user_time"
+columns = ["user_id", "created_at_unix_ms"]
+
+[table.niffler_billing_reservations]
+domain = "niffler_core"
+order = 1030
+primary_key = ["id"]
+
+[[table.niffler_billing_reservations.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_billing_reservations.columns]]
+name = "request_id"
+type = "text"
+length = 100
+
+[[table.niffler_billing_reservations.columns]]
+name = "user_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "api_key_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "product_plan_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "status"
+type = "text"
+length = 32
+
+[[table.niffler_billing_reservations.columns]]
+name = "reserved_total_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_billing_reservations.columns]]
+name = "wallet_reserved_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_billing_reservations.columns]]
+name = "entitlement_reserved_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_billing_reservations.columns]]
+name = "reserved_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_billing_reservations.columns]]
+name = "expires_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_billing_reservations.columns]]
+name = "finalized_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "settlement_snapshot_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "release_reason"
+type = "long_text"
+nullable = true
+
+[[table.niffler_billing_reservations.columns]]
+name = "idempotency_key"
+type = "text"
+length = 120
+
+[[table.niffler_billing_reservations.uniques]]
+name = "uq_niffler_billing_reservations_request"
+columns = ["request_id"]
+
+[[table.niffler_billing_reservations.uniques]]
+name = "uq_niffler_billing_reservations_idempotency"
+columns = ["idempotency_key"]
+
+[[table.niffler_billing_reservations.indexes]]
+name = "idx_niffler_billing_reservations_status_expires"
+columns = ["status", "expires_at_unix_ms"]
+
+[[table.niffler_billing_reservations.indexes]]
+name = "idx_niffler_billing_reservations_user_time"
+columns = ["user_id", "reserved_at_unix_ms"]
+
+[[table.niffler_billing_reservations.foreign_keys]]
+name = "fk_niffler_billing_reservations_snapshot"
+columns = ["settlement_snapshot_id"]
+references_table = "niffler_settlement_snapshots"
+references_columns = ["id"]
+
+[table.niffler_billing_reservation_events]
+domain = "niffler_core"
+order = 1040
+primary_key = ["id"]
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "reservation_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "event_kind"
+type = "text"
+length = 32
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "amount_usd"
+type = "decimal_money"
+default = 0
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "reason"
+type = "long_text"
+nullable = true
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "idempotency_key"
+type = "text"
+length = 120
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "actor_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_billing_reservation_events.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_billing_reservation_events.uniques]]
+name = "uq_niffler_billing_reservation_events_idempotency"
+columns = ["reservation_id", "idempotency_key"]
+
+[[table.niffler_billing_reservation_events.indexes]]
+name = "idx_niffler_billing_reservation_events_reservation"
+columns = ["reservation_id", "created_at_unix_ms"]
+
+[[table.niffler_billing_reservation_events.foreign_keys]]
+name = "fk_niffler_billing_reservation_events_reservation"
+columns = ["reservation_id"]
+references_table = "niffler_billing_reservations"
+references_columns = ["id"]
+
+[table.niffler_referral_reward_rules]
+domain = "niffler_core"
+order = 1050
+primary_key = ["id"]
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "display_name"
+type = "text"
+length = 200
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "status"
+type = "text"
+length = 32
+default = "active"
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "reward_kind"
+type = "text"
+length = 32
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "reward_value"
+type = "decimal_money"
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "applies_to_order_kind"
+type = "text"
+length = 64
+nullable = true
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "max_reward_usd"
+type = "decimal_money"
+nullable = true
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "effective_from_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "effective_until_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "config"
+type = "json"
+nullable = true
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_rules.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_rules.indexes]]
+name = "idx_niffler_referral_reward_rules_status_time"
+columns = ["status", "effective_from_unix_ms", "effective_until_unix_ms"]
+
+[table.niffler_referral_reward_ledger]
+domain = "niffler_core"
+order = 1060
+primary_key = ["id"]
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "order_id"
+type = "text"
+length = 100
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "idempotency_key"
+type = "text"
+length = 120
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "inviter_user_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "invitee_user_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "rule_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "reward_amount_usd"
+type = "decimal_money"
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "rule_snapshot"
+type = "json"
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "status"
+type = "text"
+length = 32
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "failure_reason"
+type = "long_text"
+nullable = true
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "retry_count"
+type = "int32"
+default = 0
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "paid_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "cancelled_at_unix_ms"
+type = "unix_millis"
+nullable = true
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_ledger.columns]]
+name = "updated_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_ledger.uniques]]
+name = "uq_niffler_referral_reward_ledger_order"
+columns = ["order_id"]
+
+[[table.niffler_referral_reward_ledger.uniques]]
+name = "uq_niffler_referral_reward_ledger_idempotency"
+columns = ["idempotency_key"]
+
+[[table.niffler_referral_reward_ledger.indexes]]
+name = "idx_niffler_referral_reward_ledger_inviter"
+columns = ["inviter_user_id", "created_at_unix_ms"]
+
+[[table.niffler_referral_reward_ledger.indexes]]
+name = "idx_niffler_referral_reward_ledger_status"
+columns = ["status", "updated_at_unix_ms"]
+
+[[table.niffler_referral_reward_ledger.foreign_keys]]
+name = "fk_niffler_referral_reward_ledger_rule"
+columns = ["rule_id"]
+references_table = "niffler_referral_reward_rules"
+references_columns = ["id"]
+
+[table.niffler_referral_reward_events]
+domain = "niffler_core"
+order = 1070
+primary_key = ["id"]
+
+[[table.niffler_referral_reward_events.columns]]
+name = "id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_events.columns]]
+name = "reward_ledger_id"
+type = "text_id"
+length = 36
+
+[[table.niffler_referral_reward_events.columns]]
+name = "event_kind"
+type = "text"
+length = 32
+
+[[table.niffler_referral_reward_events.columns]]
+name = "reason"
+type = "long_text"
+nullable = true
+
+[[table.niffler_referral_reward_events.columns]]
+name = "actor_id"
+type = "text_id"
+length = 36
+nullable = true
+
+[[table.niffler_referral_reward_events.columns]]
+name = "event_snapshot"
+type = "json"
+nullable = true
+
+[[table.niffler_referral_reward_events.columns]]
+name = "created_at_unix_ms"
+type = "unix_millis"
+
+[[table.niffler_referral_reward_events.indexes]]
+name = "idx_niffler_referral_reward_events_ledger"
+columns = ["reward_ledger_id", "created_at_unix_ms"]
+
+[[table.niffler_referral_reward_events.foreign_keys]]
+name = "fk_niffler_referral_reward_events_ledger"
+columns = ["reward_ledger_id"]
+references_table = "niffler_referral_reward_ledger"
+references_columns = ["id"]

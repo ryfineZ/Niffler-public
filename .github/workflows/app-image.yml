@@ -1,0 +1,113 @@
+name: Build App Image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install and build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  gateway:
+    name: Build gateway linux-amd64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: app-image-x86_64-unknown-linux-musl
+          workspaces: . -> target
+
+      - name: Install cross
+        uses: taiki-e/install-action@cross
+
+      - name: Build gateway
+        env:
+          AETHER_VERSION: ${{ github.sha }}
+          CARGO_TERM_COLOR: always
+        run: cross build --release --locked -p aether-gateway --target x86_64-unknown-linux-musl
+
+      - name: Upload gateway artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: aether-gateway-linux-amd64
+          path: target/x86_64-unknown-linux-musl/release/aether-gateway
+          if-no-files-found: error
+          retention-days: 1
+
+  image:
+    name: Build image tar
+    needs: [frontend, gateway]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v5
+        with:
+          path: artifacts
+
+      - name: Prepare image context
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cp artifacts/aether-gateway-linux-amd64/aether-gateway dist/aether-gateway-amd64
+          chmod +x dist/aether-gateway-amd64
+          cp -r artifacts/frontend-dist dist/frontend
+
+      - name: Build amd64 image tar
+        run: |
+          set -euo pipefail
+          docker build \
+            --file ./Dockerfile.app \
+            --build-arg TARGETARCH=amd64 \
+            --tag niffler-app:latest \
+            --tag niffler-app:${GITHUB_SHA} \
+            .
+          docker save niffler-app:latest niffler-app:${GITHUB_SHA} \
+            --output /tmp/niffler-app-linux-amd64.tar
+
+      - name: Upload amd64 image tar
+        uses: actions/upload-artifact@v5
+        with:
+          name: niffler-app-linux-amd64
+          path: /tmp/niffler-app-linux-amd64.tar
+          if-no-files-found: error
+          retention-days: 7
